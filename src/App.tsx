@@ -82,6 +82,7 @@ function App() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formState, setFormState] = useState(emptyForm);
   const [activeImageIndex, setActiveImageIndex] = useState<Record<number, number>>({});
+  const [fullscreenProjectId, setFullscreenProjectId] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -208,6 +209,14 @@ function App() {
 
   const setProjectImage = (projectId: number, imageIndex: number) => {
     setActiveImageIndex((current) => ({ ...current, [projectId]: imageIndex }));
+  };
+
+  const openFullscreenProject = (projectId: number) => {
+    setFullscreenProjectId(projectId);
+  };
+
+  const closeFullscreenProject = () => {
+    setFullscreenProjectId(null);
   };
 
   return (
@@ -443,7 +452,9 @@ function App() {
                   <article key={project.id} className="project-card">
                     <div className="project-gallery">
                       <div className="project-image-wrap">
-                        <img src={activeImage} alt={`${project.title} preview ${currentImageIndex + 1}`} />
+                        <button type="button" className="project-image-button" onClick={() => openFullscreenProject(project.id)}>
+                          <img src={activeImage} alt={`${project.title} preview ${currentImageIndex + 1}`} />
+                        </button>
 
                         {project.images.length > 1 && (
                           <>
@@ -451,7 +462,10 @@ function App() {
                               type="button"
                               className="gallery-arrow gallery-arrow-left"
                               aria-label={`Previous image for ${project.title}`}
-                              onClick={() => updateActiveImage(project.id, -1)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                updateActiveImage(project.id, -1);
+                              }}
                             >
                               ‹
                             </button>
@@ -459,7 +473,10 @@ function App() {
                               type="button"
                               className="gallery-arrow gallery-arrow-right"
                               aria-label={`Next image for ${project.title}`}
-                              onClick={() => updateActiveImage(project.id, 1)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                updateActiveImage(project.id, 1);
+                              }}
                             >
                               ›
                             </button>
@@ -474,7 +491,10 @@ function App() {
                               key={`${project.id}-${index}`}
                               type="button"
                               className={`project-thumb-button ${index === currentImageIndex ? 'active' : ''}`}
-                              onClick={() => setProjectImage(project.id, index)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setProjectImage(project.id, index);
+                              }}
                               aria-label={`View image ${index + 1} for ${project.title}`}
                             >
                               <img src={image} alt={`${project.title} preview ${index + 1}`} className="project-thumb" />
@@ -499,6 +519,66 @@ function App() {
                 );
               })}
             </div>
+
+            {fullscreenProjectId !== null && (() => {
+              const project = portfolioItems.find((item) => item.id === fullscreenProjectId);
+              if (!project) return null;
+
+              const modalIndex = activeImageIndex[project.id] ?? 0;
+              const modalImage = project.images[modalIndex] ?? project.images[0];
+
+              return (
+                <div className="fullscreen-overlay" onClick={closeFullscreenProject}>
+                  <div className="fullscreen-modal" onClick={(event) => event.stopPropagation()}>
+                    <button type="button" className="fullscreen-close" onClick={closeFullscreenProject} aria-label="Close full view">
+                      ×
+                    </button>
+
+                    <div className="fullscreen-image-shell">
+                      <button
+                        type="button"
+                        className="gallery-arrow gallery-arrow-left fullscreen-arrow"
+                        aria-label={`Previous image for ${project.title}`}
+                        onClick={() => updateActiveImage(project.id, -1)}
+                      >
+                        ‹
+                      </button>
+
+                      <img src={modalImage} alt={`${project.title} full view ${modalIndex + 1}`} className="fullscreen-image" />
+
+                      <button
+                        type="button"
+                        className="gallery-arrow gallery-arrow-right fullscreen-arrow"
+                        aria-label={`Next image for ${project.title}`}
+                        onClick={() => updateActiveImage(project.id, 1)}
+                      >
+                        ›
+                      </button>
+                    </div>
+
+                    <div className="fullscreen-meta">
+                      <div>
+                        <span className="project-category">{project.category}</span>
+                        <h3>{project.title}</h3>
+                      </div>
+                      <div className="fullscreen-thumbs">
+                        {project.images.map((image, index) => (
+                          <button
+                            key={`${project.id}-full-${index}`}
+                            type="button"
+                            className={`project-thumb-button ${index === modalIndex ? 'active' : ''}`}
+                            onClick={() => setProjectImage(project.id, index)}
+                            aria-label={`View image ${index + 1} for ${project.title}`}
+                          >
+                            <img src={image} alt={`${project.title} preview ${index + 1}`} className="project-thumb" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </section>
 
