@@ -612,8 +612,13 @@ function App() {
             </div>
 
             <div className="contact-details">
+<<<<<<< HEAD
               <a href="mailto:johnmichaeleco@gmail.com">johnmichaeleco@gmail.com</a>
               <a href="tel:09088939571">+63 0908-893-9571</a>
+=======
+              <a href="mailto:johnmichealeco@gmail.com">johnmichealeco@gmail.com</a>
+              <a href="tel:09088939571">09088939571</a>
+>>>>>>> f8ab46b (Adjust profile alignment)
             </div>
           </div>
         </section>
