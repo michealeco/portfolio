@@ -78,6 +78,7 @@ const emptyForm = {
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [portfolioItems, setPortfolioItems] = useState<Project[]>(defaultProjects);
+  const [isAdminMode, setIsAdminMode] = useState(false);
   const [isManagerOpen, setIsManagerOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formState, setFormState] = useState(emptyForm);
@@ -102,9 +103,25 @@ function App() {
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isAdminShortcut = event.altKey && event.shiftKey && event.key.toLowerCase() === 'm';
+      if (isAdminShortcut) {
+        setIsAdminMode((current) => !current);
+        setIsManagerOpen((current) => !current);
+      }
+
+      if (event.key === 'Escape') {
+        setIsManagerOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -115,6 +132,9 @@ function App() {
   };
 
   const openManager = () => {
+    if (!isAdminMode) {
+      return;
+    }
     setIsManagerOpen(true);
   };
 
@@ -253,7 +273,7 @@ function App() {
               <p className="eyebrow">Full-Stack Developer • Product Designer</p>
               <h1>I build elegant digital experiences that help brands grow and users connect.</h1>
               <p className="lead">
-                I’m Alex Morgan, a product-minded developer focused on creating clean, scalable,
+                I’m John Michael Eco, a product-minded developer focused on creating clean, scalable,
                 conversion-driven web apps for startups, businesses, and personal brands.
               </p>
 
@@ -268,11 +288,11 @@ function App() {
 
               <div className="stat-row">
                 <div>
-                  <strong>5+</strong>
+                  <strong>4+</strong>
                   <span>Years experience</span>
                 </div>
                 <div>
-                  <strong>18</strong>
+                  <strong>13</strong>
                   <span>Projects shipped</span>
                 </div>
                 <div>
@@ -345,12 +365,14 @@ function App() {
                 <h2>Portfolio highlights.</h2>
               </div>
 
-              <button type="button" className="button secondary small-button" onClick={openManager}>
-                Manage highlights
-              </button>
+              {isAdminMode && (
+                <button type="button" className="button secondary small-button" onClick={openManager}>
+                  Manage highlights
+                </button>
+              )}
             </div>
 
-            {isManagerOpen && (
+            {isAdminMode && isManagerOpen && (
               <div className="highlight-manager">
                 <div className="manager-header">
                   <h3>{editingId === null ? 'Create a new highlight' : 'Edit highlight'}</h3>
@@ -590,8 +612,8 @@ function App() {
             </div>
 
             <div className="contact-details">
-              <a href="mailto:alex.morgan@example.com">alex.morgan@example.com</a>
-              <a href="tel:+15551234567">+1 (555) 123-4567</a>
+              <a href="mailto:johnmichaeleco@example.com">johnmichaeleco@example.com</a>
+              <a href="tel:09088939571">+1 0908-893-9571</a>
             </div>
           </div>
         </section>
@@ -599,7 +621,7 @@ function App() {
 
       <footer className="footer">
         <div className="container footer-shell">
-          <span>© {new Date().getFullYear()} Alex Morgan</span>
+          <span>© {new Date().getFullYear()} John Michael Eco</span>
           <span>Built as a portfolio website</span>
         </div>
       </footer>
