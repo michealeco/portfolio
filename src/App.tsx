@@ -270,7 +270,7 @@ function App() {
         <section id="hero" className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="eyebrow">Full-Stack Developer • Product Designer</p>
+              <p className="eyebrow">Full-Stack Web Developer • UI/UX Designer • Software Developer • Application Developer</p>
               <h1>I build elegant digital experiences that help brands grow and users connect.</h1>
               <p className="lead">
                 I’m John Michael Eco, a product-minded developer focused on creating clean, scalable,
@@ -612,8 +612,8 @@ function App() {
             </div>
 
             <div className="contact-details">
-              <a href="mailto:johnmichaeleco@example.com">johnmichaeleco@example.com</a>
-              <a href="tel:09088939571">+1 0908-893-9571</a>
+              <a href="mailto:johnmichaeleco@gmail.com">johnmichaeleco@gmail.com</a>
+              <a href="tel:09088939571">+63 0908-893-9571</a>
             </div>
           </div>
         </section>
