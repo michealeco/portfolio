@@ -755,6 +755,9 @@ function App() {
             <div className="contact-details">
               <a href="mailto:johnmichealeco@gmail.com">johnmichealeco@gmail.com</a>
               <a href="tel:09088939571">09088939571</a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                Facebook
+              </a>
             </div>
           </div>
         </section>
