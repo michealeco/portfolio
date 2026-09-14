@@ -336,7 +336,7 @@ function App() {
                   <span>Years experience</span>
                 </div>
                 <div>
-                  <strong>13</strong>
+                  <strong>9</strong>
                   <span>Projects shipped</span>
                 </div>
                 <div>
@@ -785,7 +785,7 @@ function App() {
       <footer className="footer">
         <div className="container footer-shell">
           <span>© {new Date().getFullYear()} John Michael Eco</span>
-          <span>Built as a portfolio website</span>
+          <span>Built as a portfolio website of John Michael Eco</span>
         </div>
       </footer>
     </div>
