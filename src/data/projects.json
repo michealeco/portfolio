@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "DogGo",
+    "category": "Pet adoption platform",
+    "description": "A polished digital experience built to help people connect with pets in need of homes, with a clear journey from browsing to adoption.",
+    "stack": ["React", "UX Design", "Product Strategy"],
+    "images": ["/DogGo_2.jpg", "/DogGo_3.png", "/DogGo_4.jpg"]
+  },
+  {
+    "id": 2,
+    "title": "Farm Villa",
+    "category": "Property marketplace",
+    "description": "A high-end real estate experience focused on premium listings, search, and trust-building brand storytelling.",
+    "stack": ["Brand Design", "Frontend", "Conversion UX"],
+    "images": ["/Farm_Villa2.png", "/Farm_Villa3.png"]
+  },
+  {
+    "id": 3,
+    "title": "Until Sunrise",
+    "category": "Lifestyle brand platform",
+    "description": "A concept-driven landing experience aimed at storytelling, customer engagement, and immersive visual presentation.",
+    "stack": ["Art Direction", "Web Design", "Responsive Layout"],
+    "images": ["/UntilSunrise_2.png", "/UntilSunrise_3.jpg"]
+  },
+  {
+    "id": 4,
+    "title": "E-Laura",
+    "category": "Digital portfolio experience",
+    "description": "A modern personal brand website that balances creative visuals with functional content and a strong professional identity.",
+    "stack": ["Portfolio Design", "Content Strategy", "Web Build"],
+    "images": ["/E-Laura3.png", "/E-Laura2.jpg"]
+  }
+]

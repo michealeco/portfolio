@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import defaultProjectsData from './data/projects.json';
+import { commitFileToGitHub } from './utils/github';
 
 type Project = {
   id: number;
@@ -26,44 +28,7 @@ const skills = [
   },
 ];
 
-const defaultProjects: Project[] = [
-  {
-    id: 1,
-    title: 'DogGo',
-    category: 'Pet adoption platform',
-    description:
-      'A polished digital experience built to help people connect with pets in need of homes, with a clear journey from browsing to adoption.',
-    stack: ['React', 'UX Design', 'Product Strategy'],
-    images: ['/DogGo_2.jpg', '/DogGo_3.png', '/DogGo_4.jpg'],
-  },
-  {
-    id: 2,
-    title: 'Farm Villa',
-    category: 'Property marketplace',
-    description:
-      'A high-end real estate experience focused on premium listings, search, and trust-building brand storytelling.',
-    stack: ['Brand Design', 'Frontend', 'Conversion UX'],
-    images: ['/Farm_Villa2.png', '/Farm_Villa3.png'],
-  },
-  {
-    id: 3,
-    title: 'Until Sunrise',
-    category: 'Lifestyle brand platform',
-    description:
-      'A concept-driven landing experience aimed at storytelling, customer engagement, and immersive visual presentation.',
-    stack: ['Art Direction', 'Web Design', 'Responsive Layout'],
-    images: ['/UntilSunrise_2.png', '/UntilSunrise_3.jpg'],
-  },
-  {
-    id: 4,
-    title: 'E-Laura',
-    category: 'Digital portfolio experience',
-    description:
-      'A modern personal brand website that balances creative visuals with functional content and a strong professional identity.',
-    stack: ['Portfolio Design', 'Content Strategy', 'Web Build'],
-    images: ['/E-Laura3.png', '/E-Laura2.jpg'],
-  },
-];
+const defaultProjects: Project[] = defaultProjectsData;
 
 const profileImage = '/Me_3.jpg';
 
@@ -77,13 +42,52 @@ const emptyForm = {
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [portfolioItems, setPortfolioItems] = useState<Project[]>(defaultProjects);
+  const [portfolioItems, setPortfolioItems] = useState<Project[]>(() => {
+    try {
+      const saved = localStorage.getItem('portfolio_items');
+      return saved ? JSON.parse(saved) : defaultProjects;
+    } catch {
+      return defaultProjects;
+    }
+  });
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isManagerOpen, setIsManagerOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formState, setFormState] = useState(emptyForm);
   const [activeImageIndex, setActiveImageIndex] = useState<Record<number, number>>({});
   const [fullscreenProjectId, setFullscreenProjectId] = useState<number | null>(null);
+
+  // GitHub API integration state
+  const [githubToken, setGithubToken] = useState(() => localStorage.getItem('github_token') || '');
+  const [githubOwner, setGithubOwner] = useState(() => localStorage.getItem('github_owner') || 'michealeco');
+  const [githubRepo, setGithubRepo] = useState(() => localStorage.getItem('github_repo') || 'portfolio');
+  const [githubPath, setGithubPath] = useState(() => localStorage.getItem('github_path') || 'src/data/projects.json');
+  const [githubBranch, setGithubBranch] = useState(() => localStorage.getItem('github_branch') || 'main');
+  const [showToken, setShowToken] = useState(false);
+  const [isPushing, setIsPushing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<{
+    type: 'idle' | 'success' | 'error';
+    message?: string;
+    commitUrl?: string;
+  }>({ type: 'idle' });
+
+  // Save portfolio items to localStorage on change
+  useEffect(() => {
+    try {
+      localStorage.setItem('portfolio_items', JSON.stringify(portfolioItems));
+    } catch {
+      // Ignore storage errors
+    }
+  }, [portfolioItems]);
+
+  // Persist GitHub settings to localStorage
+  useEffect(() => {
+    localStorage.setItem('github_token', githubToken);
+    localStorage.setItem('github_owner', githubOwner);
+    localStorage.setItem('github_repo', githubRepo);
+    localStorage.setItem('github_path', githubPath);
+    localStorage.setItem('github_branch', githubBranch);
+  }, [githubToken, githubOwner, githubRepo, githubPath, githubBranch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -131,6 +135,47 @@ function App() {
     }
   };
 
+  const handlePushToGitHub = async (customItems?: Project[]) => {
+    const itemsToSync = customItems || portfolioItems;
+    if (!githubToken.trim()) {
+      setSyncStatus({
+        type: 'error',
+        message: 'Please enter your GitHub Personal Access Token below to save directly to GitHub.',
+      });
+      return;
+    }
+
+    setIsPushing(true);
+    setSyncStatus({ type: 'idle' });
+
+    const result = await commitFileToGitHub(
+      {
+        token: githubToken,
+        owner: githubOwner,
+        repo: githubRepo,
+        path: githubPath,
+        branch: githubBranch,
+      },
+      itemsToSync,
+      `Update portfolio projects via Admin Panel (${itemsToSync.length} items)`
+    );
+
+    setIsPushing(false);
+
+    if (result.success) {
+      setSyncStatus({
+        type: 'success',
+        message: 'Successfully committed & pushed changes to GitHub!',
+        commitUrl: result.commitUrl,
+      });
+    } else {
+      setSyncStatus({
+        type: 'error',
+        message: result.error || 'Failed to push to GitHub.',
+      });
+    }
+  };
+
   const openManager = () => {
     if (!isAdminMode) {
       return;
@@ -163,9 +208,13 @@ function App() {
   };
 
   const handleDelete = (projectId: number) => {
-    setPortfolioItems((current) => current.filter((project) => project.id !== projectId));
+    const updated = portfolioItems.filter((project) => project.id !== projectId);
+    setPortfolioItems(updated);
     if (editingId === projectId) {
       closeManager();
+    }
+    if (githubToken.trim()) {
+      handlePushToGitHub(updated);
     }
   };
 
@@ -188,13 +237,12 @@ function App() {
       return;
     }
 
+    let updatedItems: Project[];
     if (editingId !== null) {
-      setPortfolioItems((current) =>
-        current.map((project) =>
-          project.id === editingId
-            ? { ...project, title: nextTitle, category: nextCategory, description: nextDescription, stack: nextStack, images: nextImages }
-            : project,
-        ),
+      updatedItems = portfolioItems.map((project) =>
+        project.id === editingId
+          ? { ...project, title: nextTitle, category: nextCategory, description: nextDescription, stack: nextStack, images: nextImages }
+          : project
       );
     } else {
       const newProject: Project = {
@@ -205,11 +253,15 @@ function App() {
         stack: nextStack,
         images: nextImages,
       };
-
-      setPortfolioItems((current) => [newProject, ...current]);
+      updatedItems = [newProject, ...portfolioItems];
     }
 
+    setPortfolioItems(updatedItems);
     closeManager();
+
+    if (githubToken.trim()) {
+      handlePushToGitHub(updatedItems);
+    }
   };
 
   const updateActiveImage = (projectId: number, direction: number) => {
@@ -461,6 +513,95 @@ function App() {
                       </button>
                     </div>
                   </form>
+                </div>
+
+                <div className="github-sync-card">
+                  <div className="github-sync-header">
+                    <div>
+                      <h4>Save & Push to GitHub</h4>
+                      <p className="github-sync-desc">
+                        Save your portfolio project updates directly to your GitHub repository.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      className="button primary small-button github-push-btn"
+                      onClick={() => handlePushToGitHub()}
+                      disabled={isPushing}
+                    >
+                      {isPushing ? 'Pushing to GitHub...' : 'Push Changes to GitHub'}
+                    </button>
+                  </div>
+
+                  {syncStatus.type !== 'idle' && (
+                    <div className={`sync-status-alert ${syncStatus.type}`}>
+                      <p>{syncStatus.message}</p>
+                      {syncStatus.commitUrl && (
+                        <a href={syncStatus.commitUrl} target="_blank" rel="noopener noreferrer">
+                          View commit on GitHub →
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  <details className="github-config-details">
+                    <summary>GitHub Repository & Personal Access Token Settings</summary>
+                    <div className="github-config-grid">
+                      <label>
+                        Personal Access Token (PAT)
+                        <div className="token-input-row">
+                          <input
+                            type={showToken ? 'text' : 'password'}
+                            value={githubToken}
+                            onChange={(event) => setGithubToken(event.target.value)}
+                            placeholder="github_pat_... or ghp_..."
+                          />
+                          <button type="button" className="mini-button" onClick={() => setShowToken(!showToken)}>
+                            {showToken ? 'Hide' : 'Show'}
+                          </button>
+                        </div>
+                        <small>
+                          Required for saving directly to GitHub. Needs <strong>contents:write</strong> permission.
+                        </small>
+                      </label>
+
+                      <div className="repo-meta-row">
+                        <label>
+                          Owner
+                          <input
+                            type="text"
+                            value={githubOwner}
+                            onChange={(event) => setGithubOwner(event.target.value)}
+                          />
+                        </label>
+                        <label>
+                          Repo
+                          <input
+                            type="text"
+                            value={githubRepo}
+                            onChange={(event) => setGithubRepo(event.target.value)}
+                          />
+                        </label>
+                        <label>
+                          Branch
+                          <input
+                            type="text"
+                            value={githubBranch}
+                            onChange={(event) => setGithubBranch(event.target.value)}
+                          />
+                        </label>
+                      </div>
+
+                      <label>
+                        Target Data File Path
+                        <input
+                          type="text"
+                          value={githubPath}
+                          onChange={(event) => setGithubPath(event.target.value)}
+                        />
+                      </label>
+                    </div>
+                  </details>
                 </div>
               </div>
             )}

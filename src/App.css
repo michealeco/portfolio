@@ -443,6 +443,121 @@
   gap: 0.75rem;
 }
 
+.github-sync-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(248, 250, 252, 0.75);
+  border-radius: 16px;
+}
+
+.github-sync-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.github-sync-header h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.github-sync-desc {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.github-push-btn {
+  white-space: nowrap;
+}
+
+.sync-status-alert {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sync-status-alert.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.sync-status-alert.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.sync-status-alert a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.github-config-details {
+  margin-top: 1rem;
+}
+
+.github-config-details summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #2563eb;
+  user-select: none;
+}
+
+.github-config-grid {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(148, 163, 184, 0.25);
+}
+
+.github-config-grid label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.github-config-grid small {
+  font-weight: normal;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.github-config-grid input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: white;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  color: #0f172a;
+  font: inherit;
+}
+
+.token-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.repo-meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
