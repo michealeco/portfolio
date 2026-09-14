@@ -307,10 +307,6 @@ function App() {
               </button>
             ))}
           </nav>
-
-          <button type="button" className="nav-cta" onClick={() => scrollToSection('contact')}>
-            Let’s Talk
-          </button>
         </div>
       </header>
 
