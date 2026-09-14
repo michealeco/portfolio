@@ -295,10 +295,6 @@ function App() {
     <div className="portfolio-app">
       <header className="topbar">
         <div className="container nav-shell">
-          <button type="button" className="brand" onClick={() => scrollToSection('hero')}>
-            AM
-          </button>
-
           <nav className="nav" aria-label="Main navigation">
             {navSections.map((section) => (
               <button
@@ -356,7 +352,7 @@ function App() {
 
             <div className="hero-visual">
               <div className="profile-panel">
-                <img src={profileImage} alt="Alex Morgan portrait" />
+                <img src={profileImage} alt="John Michael Eco portrait" />
                 <div className="panel-card">
                   <span className="status-dot" />
                   Available for work
