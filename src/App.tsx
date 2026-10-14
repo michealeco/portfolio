@@ -291,6 +291,29 @@ function App() {
     setFullscreenProjectId(null);
   };
 
+  useEffect(() => {
+    if (fullscreenProjectId === null) return;
+
+    const handleFullscreenKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setFullscreenProjectId(null);
+      } else if (event.key === 'ArrowLeft') {
+        updateActiveImage(fullscreenProjectId, -1);
+      } else if (event.key === 'ArrowRight') {
+        updateActiveImage(fullscreenProjectId, 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleFullscreenKey);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleFullscreenKey);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [fullscreenProjectId]);
+
   return (
     <div className="portfolio-app">
       <header className="topbar">
@@ -685,51 +708,101 @@ function App() {
               return (
                 <div className="fullscreen-overlay" onClick={closeFullscreenProject}>
                   <div className="fullscreen-modal" onClick={(event) => event.stopPropagation()}>
-                    <button type="button" className="fullscreen-close" onClick={closeFullscreenProject} aria-label="Close full view">
-                      ×
-                    </button>
-
-                    <div className="fullscreen-image-shell">
-                      <button
-                        type="button"
-                        className="gallery-arrow gallery-arrow-left fullscreen-arrow"
-                        aria-label={`Previous image for ${project.title}`}
-                        onClick={() => updateActiveImage(project.id, -1)}
-                      >
-                        ‹
-                      </button>
-
-                      <img src={modalImage} alt={`${project.title} full view ${modalIndex + 1}`} className="fullscreen-image" />
-
-                      <button
-                        type="button"
-                        className="gallery-arrow gallery-arrow-right fullscreen-arrow"
-                        aria-label={`Next image for ${project.title}`}
-                        onClick={() => updateActiveImage(project.id, 1)}
-                      >
-                        ›
-                      </button>
-                    </div>
-
-                    <div className="fullscreen-meta">
-                      <div>
-                        <span className="project-category">{project.category}</span>
-                        <h3>{project.title}</h3>
+                    <div className="fullscreen-header">
+                      <div className="fullscreen-header-info">
+                        <div className="fullscreen-badges">
+                          <span className="fullscreen-category-pill">{project.category}</span>
+                          {project.images.length > 1 && (
+                            <span className="fullscreen-counter-pill">
+                              {modalIndex + 1} / {project.images.length}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="fullscreen-title">{project.title}</h3>
                       </div>
-                      <div className="fullscreen-thumbs">
-                        {project.images.map((image, index) => (
-                          <button
-                            key={`${project.id}-full-${index}`}
-                            type="button"
-                            className={`project-thumb-button ${index === modalIndex ? 'active' : ''}`}
-                            onClick={() => setProjectImage(project.id, index)}
-                            aria-label={`View image ${index + 1} for ${project.title}`}
-                          >
-                            <img src={image} alt={`${project.title} preview ${index + 1}`} className="project-thumb" />
-                          </button>
-                        ))}
+
+                      <div className="fullscreen-header-actions">
+                        {project.stack && project.stack.length > 0 && (
+                          <div className="fullscreen-stack">
+                            {project.stack.map((tech) => (
+                              <span key={tech} className="fullscreen-tech-tag">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="fullscreen-close-btn"
+                          onClick={closeFullscreenProject}
+                          aria-label="Close full view"
+                          title="Close (Esc)"
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                          </svg>
+                        </button>
                       </div>
                     </div>
+
+                    <div className="fullscreen-stage">
+                      {project.images.length > 1 && (
+                        <button
+                          type="button"
+                          className="fullscreen-arrow fullscreen-arrow-prev"
+                          aria-label={`Previous image for ${project.title}`}
+                          onClick={() => updateActiveImage(project.id, -1)}
+                          title="Previous image (←)"
+                        >
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
+                          </svg>
+                        </button>
+                      )}
+
+                      <div className="fullscreen-image-wrapper">
+                        <img
+                          key={`${project.id}-${modalIndex}`}
+                          src={modalImage}
+                          alt={`${project.title} full view ${modalIndex + 1}`}
+                          className="fullscreen-image"
+                        />
+                      </div>
+
+                      {project.images.length > 1 && (
+                        <button
+                          type="button"
+                          className="fullscreen-arrow fullscreen-arrow-next"
+                          aria-label={`Next image for ${project.title}`}
+                          onClick={() => updateActiveImage(project.id, 1)}
+                          title="Next image (→)"
+                        >
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+
+                    {project.images.length > 1 && (
+                      <div className="fullscreen-footer">
+                        <div className="fullscreen-thumbs-track">
+                          {project.images.map((image, index) => (
+                            <button
+                              key={`${project.id}-full-${index}`}
+                              type="button"
+                              className={`fullscreen-thumb-button ${index === modalIndex ? 'active' : ''}`}
+                              onClick={() => setProjectImage(project.id, index)}
+                              aria-label={`View image ${index + 1} of ${project.images.length} for ${project.title}`}
+                            >
+                              <img src={image} alt="" className="fullscreen-thumb-image" />
+                              <span className="fullscreen-thumb-badge">{index + 1}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
