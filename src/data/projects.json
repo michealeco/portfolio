@@ -13,22 +13,24 @@
       "/DogGo_2.jpg",
       "/DogGo_3.png",
       "/DogGo_4.jpg",
-      "/DogGo_5.jpg",
-      "/DogGo_6.jpg",
+      "/DogGo_5.png",
+      "/DogGo_6.png",
       "/DogGo_7.jpg"
     ]
   },
   {
     "id": 2,
     "title": "Farm Villa",
-    "category": "Property marketplace",
-    "description": "A high-end real estate experience focused on premium listings, search, and trust-building brand storytelling.",
+    "category": "Booking, Website, Resort",
+    "description": "A website project for booking a relaxing farm getaway. It allows users to explore the property, check its amenities and availability, and reserve dates for their stay.",
     "stack": [
-      "Brand Design",
+      "HTML",
+      "CSS",
       "Frontend",
       "Conversion UX"
     ],
     "images": [
+      "/Farm_Villa.png",
       "/Farm_Villa2.png",
       "/Farm_Villa3.png"
     ]
