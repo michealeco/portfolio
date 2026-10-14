@@ -46,6 +46,7 @@
       "Canva"
     ],
     "images": [
+      "/UntilSunrise.png",
       "/UntilSunrise_2.png",
       "/UntilSunrise_3.jpg"
     ]
@@ -53,14 +54,14 @@
   {
     "id": 4,
     "title": "E-Laura",
-    "category": "Digital portfolio experience",
-    "description": "A modern personal brand website that balances creative visuals with functional content and a strong professional identity.",
+    "category": "App, Education, Florante at Laura",
+    "description": "An educational quiz game based on the famous Filipino literary work Florante at Laura.",
     "stack": [
-      "Portfolio Design",
-      "Content Strategy",
-      "Web Build"
+      "Android Studio",
+      "Figma"
     ],
     "images": [
+      "/E-Laura.jpg",
       "/E-Laura3.png",
       "/E-Laura2.jpg"
     ]
