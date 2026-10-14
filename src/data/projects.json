@@ -38,12 +38,12 @@
   {
     "id": 3,
     "title": "Until Sunrise",
-    "category": "Lifestyle brand platform",
-    "description": "A concept-driven landing experience aimed at storytelling, customer engagement, and immersive visual presentation.",
+    "category": "Game, Horror",
+    "description": "A survival game concept centered on surviving dangerous nighttime challenges while exploring your surroundings, managing resources, and completing objectives before sunrise.",
     "stack": [
-      "Art Direction",
-      "Web Design",
-      "Responsive Layout"
+      "Unreal Engine",
+      "3DX Max",
+      "Canva"
     ],
     "images": [
       "/UntilSunrise_2.png",
