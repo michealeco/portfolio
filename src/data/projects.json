@@ -2,17 +2,20 @@
   {
     "id": 1,
     "title": "DogGo",
-    "category": "Pet adoption platform",
-    "description": "A polished digital experience built to help people connect with pets in need of homes, with a clear journey from browsing to adoption.",
+    "category": "Tracker, Management",
+    "description": "Veterinary Clinic Management System that combines clinic management, an IoT-enabled dog collar, GPS tracking, heart-rate monitoring, and QR-based dog identification.",
     "stack": [
       "React",
       "UX Design",
-      "Product Strategy"
+      "IoT"
     ],
     "images": [
       "/DogGo_2.jpg",
       "/DogGo_3.png",
-      "/DogGo_4.jpg"
+      "/DogGo_4.jpg",
+      "/DogGo_5.jpg",
+      "/DogGo_6.jpg",
+      "/DogGo_7.jpg"
     ]
   },
   {
