@@ -25,8 +25,7 @@
     "description": "Veterinary Clinic Management System that combines clinic management, an IoT-enabled dog collar, GPS tracking, heart-rate monitoring, and QR-based dog identification.",
     "stack": [
       "React",
-      "UI Design",
-      "IoT"
+      "Figma"
     ],
     "images": [
       "/DogGo_2.jpg",
