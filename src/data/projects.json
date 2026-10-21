@@ -20,12 +20,12 @@
   },
   {
     "id": 1,
-    "title": "DogGo",
+    "title": "DogGo (2025)",
     "category": "Tracker, Management",
     "description": "Veterinary Clinic Management System that combines clinic management, an IoT-enabled dog collar, GPS tracking, heart-rate monitoring, and QR-based dog identification.",
     "stack": [
       "React",
-      "UX Design",
+      "UI Design",
       "IoT"
     ],
     "images": [
@@ -39,7 +39,7 @@
   },
   {
     "id": 2,
-    "title": "Farm Villa",
+    "title": "Farm Villa (2022)",
     "category": "Booking, Website, Resort",
     "description": "A website project for booking a relaxing farm getaway. It allows users to explore the property, check its amenities and availability, and reserve dates for their stay.",
     "stack": [
@@ -56,7 +56,7 @@
   },
   {
     "id": 3,
-    "title": "Until Sunrise",
+    "title": "Until Sunrise 2025)",
     "category": "Game, Horror",
     "description": "A survival game concept centered on surviving dangerous nighttime challenges while exploring your surroundings, managing resources, and completing objectives before sunrise.",
     "stack": [
