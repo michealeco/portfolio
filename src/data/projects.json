@@ -7,7 +7,7 @@
     "stack": [
       "React Js",
       "Figma",
-      "Rest API"
+      "REST API"
     ],
     "images": [
       "/SB_T1.png",
@@ -24,7 +24,8 @@
     "category": "Tracker, Management",
     "description": "Veterinary Clinic Management System that combines clinic management, an IoT-enabled dog collar, GPS tracking, heart-rate monitoring, and QR-based dog identification.",
     "stack": [
-      "React",
+      "React Js",
+      "REST API",
       "Figma"
     ],
     "images": [
@@ -60,7 +61,7 @@
     "description": "A survival game concept centered on surviving dangerous nighttime challenges while exploring your surroundings, managing resources, and completing objectives before sunrise.",
     "stack": [
       "Unreal Engine",
-      "3DX Max",
+      "3Ds Max",
       "Canva"
     ],
     "images": [
