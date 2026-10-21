@@ -359,7 +359,7 @@ function App() {
                   <span>Years experience</span>
                 </div>
                 <div>
-                  <strong>9</strong>
+                  <strong>5</strong>
                   <span>Projects shipped</span>
                 </div>
                 <div>
