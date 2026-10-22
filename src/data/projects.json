@@ -1,5 +1,22 @@
 [
   {
+    "id": 1792645629168,
+    "title": "E-Sessionary App (2026)",
+    "category": "Application, Government Session, Document Viewer",
+    "description": "In the past months, E-Sessionary focused primarily on its main system for managing legislative sessions and records. With this new update, E-Sessionary now introduces a dedicated application for authorized legislative officials, allowing them to conveniently view both current and past Sangguniang Bayan sessions. This enhancement expands the system's capabilities by providing officials with easier access to session information and historical legislative records, promoting more accessible, organized, and efficient legislative operations.",
+    "stack": [
+      "React JS",
+      "Figma",
+      "REST API"
+    ],
+    "images": [
+      "/Session1.jpg",
+      "/Session2.jpg",
+      "/Session3.jpg",
+      "/Session4.jpg"
+    ]
+  },
+  {
     "id": 1792002687758,
     "title": "E-Sessionary (2026)",
     "category": "System, Government Session, Document Management",
